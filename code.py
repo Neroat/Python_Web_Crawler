@@ -28,15 +28,12 @@ class MainWindow(QWidget, Ui_Form):
         input_nick = self.nickname.text()
         driver.get(f"https://dak.gg/er/players/{input_nick}")
         driver.implicitly_wait(3)
-        #response = requests.get(f"https://dak.gg/er/players/{input_nick}")
-        #html = response.text
         html = driver.page_source
         soup = BeautifulSoup(html, 'html.parser')
-        # find = soup.select_one('div.right')
-        # new = find.select_one('section.css-1tvia63')
         divs = soup.select('div.css-1jibmi3')
-        #print(f"find 결과 : {divs}")
+
         for index, div in enumerate(divs):
+
             # 캐릭터 이름과 레벨 추출
             character_name = div.select_one("div.character-name")
             character_name = character_name.text if character_name else "N/A"
@@ -68,7 +65,6 @@ class MainWindow(QWidget, Ui_Form):
                 item_name = item.select_one("img.item")["alt"] if item.select_one("img.item") else "없음"
                 item_names.append(item_name)
 
-            # 출력
             self.textBrowser.append("\n")
             self.textBrowser.append(f"{index + 1}번째 실험체: {character_name} \n레벨: {character_level} \n순위: {rank}, 딜량: {damage}")
             self.textBrowser.append(f"플레이 통계 - TK: {tk}, K: {k}, A: {a}")
